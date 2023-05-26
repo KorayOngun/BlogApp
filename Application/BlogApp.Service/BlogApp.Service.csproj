@@ -7,8 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\BlogApp.Results\BlogApp.Results.csproj" />
     <ProjectReference Include="..\..\DataAccess\BlogApp.DataAccess\BlogApp.DataAccess.csproj" />
+    <ProjectReference Include="..\BlogApp.Results\BlogApp.Results.csproj" />
   </ItemGroup>
 
 </Project>
