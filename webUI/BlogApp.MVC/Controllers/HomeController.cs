@@ -1,4 +1,6 @@
-﻿using BlogApp.MVC.Models;
+﻿using BlogApp.DataAccess;
+using BlogApp.MVC.Models;
+using BlogApp.Service;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -7,15 +9,17 @@ namespace BlogApp.MVC.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
+        private readonly IBlogService _service;
+        public HomeController(ILogger<HomeController> logger,IBlogService service)
         {
             _logger = logger;
+            _service = service;
         }
 
         public IActionResult Index()
         {
-            return View();
+            var data = _service.GetAllBlogs();
+            return View(data);
         }
 
         public IActionResult Privacy()

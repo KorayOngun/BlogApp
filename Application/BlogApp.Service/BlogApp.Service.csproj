@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="12.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\DataAccess\BlogApp.DataAccess\BlogApp.DataAccess.csproj" />
     <ProjectReference Include="..\BlogApp.Results\BlogApp.Results.csproj" />
   </ItemGroup>

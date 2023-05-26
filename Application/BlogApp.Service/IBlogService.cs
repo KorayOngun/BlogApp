@@ -11,6 +11,6 @@ namespace BlogApp.Service
 {
     public interface IBlogService 
     {
-        IDataResult<BlogDisplayResponse> GetAllBlogs();
+        ICollection<BlogDisplayResponse> GetAllBlogs();
     }
 }
