@@ -7,8 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\BlogApp.Results\BlogApp.Results.csproj" />
-    <ProjectReference Include="..\..\DataAccess\BlogApp.DataAccess\BlogApp.DataAccess.csproj" />
+    <Folder Include="DTOs\Request\" />
   </ItemGroup>
 
 </Project>
