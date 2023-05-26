@@ -11,13 +11,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "webUI", "webUI", "{A95E54E0
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Application", "Application", "{5AF596B4-7050-4C2D-A8D5-7C0A743FB04A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlogApp.MVC", "webUI\BlogApp.MVC\BlogApp.MVC.csproj", "{073007BE-0988-4C8D-AB32-EDF4228A40B5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlogApp.MVC", "webUI\BlogApp.MVC\BlogApp.MVC.csproj", "{073007BE-0988-4C8D-AB32-EDF4228A40B5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlogApp.Entities", "Entity\BlogApp.Entities\BlogApp.Entities.csproj", "{ED3B83FA-E9E8-455A-9140-51A47A4DD818}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlogApp.Entities", "Entity\BlogApp.Entities\BlogApp.Entities.csproj", "{ED3B83FA-E9E8-455A-9140-51A47A4DD818}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlogApp.DataAccess", "DataAccess\BlogApp.DataAccess\BlogApp.DataAccess.csproj", "{976B6B14-D8D5-4314-B56F-806B5E13D5ED}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlogApp.DataAccess", "DataAccess\BlogApp.DataAccess\BlogApp.DataAccess.csproj", "{976B6B14-D8D5-4314-B56F-806B5E13D5ED}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlogApp.Service", "Application\BlogApp.Service\BlogApp.Service.csproj", "{53036F92-BB57-4F2D-84F0-FD1BDFFD725C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlogApp.Service", "Application\BlogApp.Service\BlogApp.Service.csproj", "{53036F92-BB57-4F2D-84F0-FD1BDFFD725C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
