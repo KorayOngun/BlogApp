@@ -1,5 +1,6 @@
 ﻿using BlogApp.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +16,12 @@ namespace BlogApp.DataAccess
         public DbSet<Admin> Admin { get; set; }
         public DbSet<User> User { get; set; }
         public DbSet<Comment> Comment { get; set; }
+    
+
+        public BlogAppContext(DbContextOptions options) : base(options)
+        {
+          
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -30,16 +37,6 @@ namespace BlogApp.DataAccess
 
             modelBuilder.Entity<Comment>().HasKey("BlogId", "UserId");
 
-            
-            
-
-            
-
-            
-        }
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=BlogAppDb;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False");
         }
     }
 }

@@ -2,14 +2,21 @@ using AutoMapper;
 using BlogApp.DataAccess;
 using BlogApp.Service;
 using BlogApp.Service.MapProfile;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
 builder.Services.AddSingleton<IBlogRepo, BlogRepo>();
 builder.Services.AddSingleton<IBlogService, BlogService>();
-builder.Services.AddSingleton<BlogAppContext, BlogAppContext>();
+builder.Services.AddSingleton<BlogAppContext>().AddDbContextFactory<BlogAppContext>(optionsAction =>
+{
+    optionsAction.UseSqlServer(builder.Configuration.GetConnectionString("SqlCon"));
+   
+});
 builder.Services.AddAutoMapper(typeof(MapProfile));
 var app = builder.Build();
 
