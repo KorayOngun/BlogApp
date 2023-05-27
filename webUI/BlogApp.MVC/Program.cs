@@ -15,7 +15,6 @@ builder.Services.AddSingleton<IBlogService, BlogService>();
 builder.Services.AddSingleton<BlogAppContext>().AddDbContextFactory<BlogAppContext>(optionsAction =>
 {
     optionsAction.UseSqlServer(builder.Configuration.GetConnectionString("SqlCon"));
-   
 });
 builder.Services.AddAutoMapper(typeof(MapProfile));
 var app = builder.Build();

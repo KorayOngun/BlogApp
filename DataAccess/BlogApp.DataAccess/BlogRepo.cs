@@ -1,4 +1,5 @@
 ﻿using BlogApp.Entities;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,24 +24,27 @@ namespace BlogApp.DataAccess
             context.SaveChanges();
         }
 
-        public Task AddAsync(Blog entity)
+        public async Task AddAsync(Blog entity)
         {
-            throw new NotImplementedException();
+            await context.Blog.AddAsync(entity);
+            await context.SaveChangesAsync();
         }
 
         public void Delete(Blog entity)
         {
-            throw new NotImplementedException();
+           context.Remove(entity);
+            context.SaveChanges();
         }
 
-        public Task DeleteAsync(Blog entity)
+        public async Task DeleteAsync(Blog entity)
         {
-            throw new NotImplementedException();
+            context.Remove(entity);
+            await context.SaveChangesAsync();
         }
 
         public Blog Get(int id)
         {
-            throw new NotImplementedException();
+            return context.Blog.FirstOrDefault(b => b.Id == id);
         }
 
         public ICollection<Blog> GetAll()
@@ -50,17 +54,19 @@ namespace BlogApp.DataAccess
 
         public ICollection<Blog> GetAllWithPredicate(Expression<Func<Blog, bool>> predicate)
         {
-            throw new NotImplementedException();
+            return context.Blog.Where(predicate).AsNoTracking().ToList();   
         }
 
         public void Update(Blog entity)
         {
-            throw new NotImplementedException();
+            context.Blog.Update(entity);
+            context.SaveChanges();  
         }
 
-        public Task UpdateAsync(Blog entity)
+        public async Task UpdateAsync(Blog entity)
         {
-            throw new NotImplementedException();
+            context.Update(entity);
+            await context.SaveChangesAsync();
         }
     }
 }

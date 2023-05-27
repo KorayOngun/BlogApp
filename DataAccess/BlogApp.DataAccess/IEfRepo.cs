@@ -19,5 +19,6 @@ namespace BlogApp.DataAccess
         Task DeleteAsync(T entity);
         void Update(T entity);
         Task UpdateAsync(T entity);
+        
     }
 }

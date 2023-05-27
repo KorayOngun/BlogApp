@@ -3,13 +3,22 @@
 }
 @model ICollection<BlogDisplayResponse>;
 
-<div class="text-center">
-    @foreach (var item in Model)
-    {
-        <div>@item.Id) @item.Title</div>
-        <br />
-        <div>@item.Content</div>
-        <br />
-        <br />
-    }
+<div class="container">
+    <div class="row">@TempData["message"]</div>
+    <div class="row">
+        <div class="col-2">
+            <a asp-controller="home" asp-action="AddBlog">blog ekle</a>
+        </div>
+        <div class="col-7">
+            @foreach (var item in Model)
+            {
+                <div>@item.Id) @item.Title</div>
+                <br />
+                <div>@item.Content</div>
+                <br />
+                <br />
+            }
+        </div>
+    </div>
+   
 </div>

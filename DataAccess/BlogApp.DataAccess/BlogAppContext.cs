@@ -22,7 +22,7 @@ namespace BlogApp.DataAccess
         {
           
         }
-
+       
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Blog>().Property(p => p.Title).HasMaxLength(150);

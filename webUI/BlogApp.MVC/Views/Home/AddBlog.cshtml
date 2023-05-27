@@ -1,0 +1,21 @@
+﻿
+@{
+    ViewData["Title"] = "AddBlog";
+}
+@model BlogAddRequest
+<form method="post" asp-controller="home" asp-action="add">
+    <label>blog adı</label>
+    <input asp-for="Title" type="text"  />
+    <br />
+    <label>İçerik</label>
+    <input asp-for="Content" type="text"  />
+    <br />
+    <label>Admin</label>
+    <input asp-for="AdminId" type="text"  />
+    <br />
+    <label>kategori</label>
+    <input asp-for="CategoryId" type="text"  />
+    <br />
+    <button class="btn btn-success" type="submit">Kaydet</button>
+</form>
+

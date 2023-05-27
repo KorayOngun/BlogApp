@@ -1,5 +1,8 @@
 ﻿using AutoMapper;
 using BlogApp.DataAccess;
+using BlogApp.Entities;
+using BlogApp.Results;
+using BlogApp.Results.DTOs.Request;
 using BlogApp.Results.DTOs.Response;
 using System;
 using System.Collections.Generic;
@@ -18,6 +21,22 @@ namespace BlogApp.Service
         {
             this.repo = repo;
             this.mapper = mapper;
+        }
+
+        public IResult Add(BlogAddRequest blog)
+        {
+            Blog item = mapper.Map<Blog>(blog);
+            repo.Add(item);
+            if (item.Id!= null)
+            {
+                return new SuccessResult("blog eklendi");
+            }
+            return new ErrorResult("blog eklenemedi");
+        }
+
+        public Task<IResult> AddAsync(BlogAddRequest blog)
+        {
+            throw new NotImplementedException();
         }
 
         public ICollection<BlogDisplayResponse> GetAllBlogs()

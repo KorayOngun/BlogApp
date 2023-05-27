@@ -1,5 +1,6 @@
 ﻿using BlogApp.DataAccess;
 using BlogApp.MVC.Models;
+using BlogApp.Results.DTOs.Request;
 using BlogApp.Service;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
@@ -20,6 +21,19 @@ namespace BlogApp.MVC.Controllers
         {
             var data = _service.GetAllBlogs();
             return View(data);
+        }
+        public IActionResult AddBlog()
+        {
+            return View();
+        }
+        public IActionResult Add(BlogAddRequest blog) 
+        {
+            var result = _service.Add(blog);
+            if (result.result)
+            {
+                TempData["message"] = result.message;
+            }
+            return RedirectToAction("Index");
         }
 
         public IActionResult Privacy()

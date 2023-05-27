@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using BlogApp.Entities;
+using BlogApp.Results.DTOs.Request;
 using BlogApp.Results.DTOs.Response;
 using System;
 using System.Collections.Generic;
@@ -14,6 +15,7 @@ namespace BlogApp.Service.MapProfile
         public MapProfile()
         {
             CreateMap<Blog, BlogDisplayResponse>();
+            CreateMap<BlogAddRequest,Blog> ();
         }
     }
 }
