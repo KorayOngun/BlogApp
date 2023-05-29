@@ -1,4 +1,5 @@
-﻿
+﻿@using BlogApp.Entities;
+
 @{
     ViewData["Title"] = "AddBlog";
 }
@@ -7,14 +8,18 @@
     <label>blog adı</label>
     <input asp-for="Title" type="text"  />
     <br />
-    <label>İçerik</label>
-    <input asp-for="Content" type="text"  />
+    <textarea placeholder="içerik" asp-for="Content"></textarea>
     <br />
     <label>Admin</label>
     <input asp-for="AdminId" type="text"  />
     <br />
     <label>kategori</label>
-    <input asp-for="CategoryId" type="text"  />
+    <select asp-for="CategoryId">
+        @foreach (var item in ViewData["categories"] as ICollection<Category>)
+        {
+            <option value="@item.Id">@item.Name</option>
+        }
+    </select>
     <br />
     <button class="btn btn-success" type="submit">Kaydet</button>
 </form>

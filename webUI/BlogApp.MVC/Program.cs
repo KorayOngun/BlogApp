@@ -12,6 +12,8 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddSingleton<IBlogRepo, BlogRepo>();
 builder.Services.AddSingleton<IBlogService, BlogService>();
+builder.Services.AddSingleton<ICategoryRepo, CategoryRepo>();
+builder.Services.AddSingleton<ICategoryService, CategoryService>();
 builder.Services.AddSingleton<BlogAppContext>().AddDbContextFactory<BlogAppContext>(optionsAction =>
 {
     optionsAction.UseSqlServer(builder.Configuration.GetConnectionString("SqlCon"));

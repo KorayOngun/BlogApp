@@ -11,10 +11,12 @@ namespace BlogApp.MVC.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IBlogService _service;
-        public HomeController(ILogger<HomeController> logger,IBlogService service)
+        private readonly ICategoryService _categoryService;
+        public HomeController(ILogger<HomeController> logger,IBlogService service, ICategoryService categoryService)
         {
             _logger = logger;
             _service = service;
+            _categoryService = categoryService;
         }
 
         public IActionResult Index()
@@ -24,6 +26,7 @@ namespace BlogApp.MVC.Controllers
         }
         public IActionResult AddBlog()
         {
+            ViewData["categories"] = _categoryService.GetAll();
             return View();
         }
         public IActionResult Add(BlogAddRequest blog) 
