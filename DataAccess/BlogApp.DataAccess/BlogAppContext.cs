@@ -19,7 +19,7 @@ namespace BlogApp.DataAccess
     
         public DbSet<Category> Category { get; set; }
 
-        public BlogAppContext(DbContextOptions options) : base(options)
+        public BlogAppContext(DbContextOptions<BlogAppContext> options) : base(options)
         {
           
         }

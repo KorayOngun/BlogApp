@@ -2,6 +2,7 @@
 using BlogApp.MVC.Models;
 using BlogApp.Results.DTOs.Request;
 using BlogApp.Service;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -24,12 +25,15 @@ namespace BlogApp.MVC.Controllers
             var data = _service.GetAllBlogs();
             return View(data);
         }
+        [Authorize(Roles ="admin,editor")]
         public IActionResult AddBlog()
         {
             ViewData["categories"] = _categoryService.GetAll();
             return View();
         }
-        public IActionResult Add(BlogAddRequest blog) 
+        [Authorize(Roles = "admin,editor")]
+        [HttpPost]
+        public IActionResult AddBlog(BlogAddRequest blog) 
         {
             var result = _service.Add(blog);
             if (result.result)

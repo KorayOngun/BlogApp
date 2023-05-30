@@ -16,6 +16,7 @@ namespace BlogApp.Service.MapProfile
         {
             CreateMap<Blog, BlogDisplayResponse>();
             CreateMap<BlogAddRequest,Blog> ();
+            CreateMap<User, UserLoginResponse>();
         }
     }
 }

@@ -8,57 +8,58 @@ using System.Threading.Tasks;
 
 namespace BlogApp.DataAccess
 {
-    public class CategoryRepo : ICategoryRepo
+    public class UserRepo : IUserRepo
     {
         private readonly BlogAppContext _context;
 
-        public CategoryRepo(BlogAppContext context)
+        public UserRepo(BlogAppContext context)
         {
             _context = context;
-            
         }
 
-        public void Add(Category entity)
+        public void Add(User entity)
         {
             throw new NotImplementedException();
         }
 
-        public Task AddAsync(Category entity)
+        public Task AddAsync(User entity)
         {
             throw new NotImplementedException();
         }
 
-        public void Delete(Category entity)
+        public void Delete(User entity)
         {
             throw new NotImplementedException();
         }
 
-        public Task DeleteAsync(Category entity)
+        public Task DeleteAsync(User entity)
         {
             throw new NotImplementedException();
         }
 
-        public Category Get(int id)
+        public User Get(int id)
         {
             throw new NotImplementedException();
         }
 
-        public ICollection<Category> GetAll()
-        {
-            return _context.Category.ToList();
-        }
-
-        public ICollection<Category> GetAllWithPredicate(Expression<Func<Category, bool>> predicate)
+        public ICollection<User> GetAll()
         {
             throw new NotImplementedException();
         }
 
-        public void Update(Category entity)
+        public ICollection<User> GetAllWithPredicate(Expression<Func<User, bool>> predicate)
+        {
+            return _context.User.Where(predicate).ToList();
+        }
+
+      
+
+        public void Update(User entity)
         {
             throw new NotImplementedException();
         }
 
-        public Task UpdateAsync(Category entity)
+        public Task UpdateAsync(User entity)
         {
             throw new NotImplementedException();
         }
