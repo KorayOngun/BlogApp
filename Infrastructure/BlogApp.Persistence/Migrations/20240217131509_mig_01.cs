@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace BlogApp.Persistence.Migrations
 {
     /// <inheritdoc />
-    public partial class init : Migration
+    public partial class mig_01 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

@@ -14,7 +14,7 @@ namespace BlogApp.Persistence
         public BlogAppDbContext CreateDbContext(string[] args)
         {
             var optionBuilder = new DbContextOptionsBuilder<BlogAppDbContext>();
-            optionBuilder.UseSqlServer("");
+            optionBuilder.UseSqlServer("Data Source=DESKTOP-1QVKUDC;Initial Catalog=BlogApp;Integrated Security=True;Connect Timeout=30;Encrypt=True;Trust Server Certificate=True;Application Intent=ReadWrite;Multi Subnet Failover=False");
             return new BlogAppDbContext(optionBuilder.Options);
         }
     }

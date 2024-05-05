@@ -1,3 +1,4 @@
+using BlogApp.Application;
 using BlogApp.Persistence;
 using BlogApp.WebApi.Middlewares;
 
@@ -12,7 +13,10 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddTransient<RequestTimer>();
 
-builder.Services.AddPersistenceRegistration(builder.Configuration.GetConnectionString("MsSql"));
+builder.Services.AddApplication();
+
+var con = builder.Configuration.GetConnectionString("MsSql");
+builder.Services.AddPersistenceRegistration(con);
 
 
 builder.Services.AddCors(opt =>
@@ -33,13 +37,13 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseCors();
 
+app.UseAuthentication();
 app.UseAuthorization();
-
-app.UseMiddleware<RequestTimer>();
 
 app.MapControllers();
 
-app.UseCors();
+app.UseMiddleware<RequestTimer>();
 
 app.Run();

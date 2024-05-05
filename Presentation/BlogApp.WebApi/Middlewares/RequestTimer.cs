@@ -1,15 +1,16 @@
 ﻿
+using System.Diagnostics;
+
 namespace BlogApp.WebApi.Middlewares
 {
     public class RequestTimer : IMiddleware
     {
         public async Task InvokeAsync(HttpContext context, RequestDelegate next)
         {
-           
-            var tic = DateTime.UtcNow;
+            Stopwatch stopwatch = Stopwatch.StartNew();
             await next(context);
-            var toc = DateTime.UtcNow;
-            Console.WriteLine(toc-tic); 
+            stopwatch.Stop();
+            Console.WriteLine(stopwatch);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using BlogApp.Domain.Identities;
+﻿using BlogApp.Domain.Entities;
+using BlogApp.Domain.Identities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -11,6 +12,11 @@ namespace BlogApp.Persistence.Context
 {
     public class BlogAppDbContext(DbContextOptions<BlogAppDbContext> options) : IdentityDbContext<AppUser,AppRole,Guid>(options)
     {
-        
+
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+        }
     }
 }
