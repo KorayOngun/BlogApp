@@ -1,5 +1,6 @@
 using BlogApp.Persistence;
 using BlogApp.Application;
+using BlogApp.Infrastructure;
 using BlogApp.Presentation.Endpoints;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,6 +10,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddPersistenceServices();
 builder.Services.AddApplicationServices();
+builder.Services.AddInfrastructureServices();
 
 var app = builder.Build();
  

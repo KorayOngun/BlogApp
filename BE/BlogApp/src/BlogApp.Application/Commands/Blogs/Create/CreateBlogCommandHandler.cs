@@ -1,24 +1,28 @@
-﻿using BlogApp.Core.Entities;
+﻿using BlogApp.Application.Services;
+using BlogApp.Core.Entities;
 using MediatR;
 
 namespace BlogApp.Application.Commands.Blogs.Create;
 
-public class CreateBlogCommandHandler : IRequestHandler<CreateBlogCommand, Guid>
+public class CreateBlogCommandHandler(IBlogService blogService) : IRequestHandler<CreateBlogCommand, Guid>
 {
-    private readonly Core.Repository.IBlogRepository _blogRepository;
-    public CreateBlogCommandHandler(Core.Repository.IBlogRepository blogRepository)
-    {
-        _blogRepository = blogRepository;
-    }
+    private readonly IBlogService _blogService = blogService;
+
     public async Task<Guid> Handle(CreateBlogCommand request, CancellationToken cancellationToken)
     {
-        var blog = new Blog()
-        {
-            AuthorId = request.AuthorId,
-            Content = request.Content,
-            Title = request.Title,
-        };
-        await _blogRepository.AddAsync(blog);
+
+        Blog blog = ToEntity(request);
+        await _blogService.CreateBlogAsync(blog);
         return blog.Id;
+    }
+
+    private static Blog ToEntity(CreateBlogCommand request)
+    {
+        return new Blog
+        {
+            Title = request.Title,
+            Content = request.Content,
+            AuthorId = request.AuthorId,
+        };
     }
 }
