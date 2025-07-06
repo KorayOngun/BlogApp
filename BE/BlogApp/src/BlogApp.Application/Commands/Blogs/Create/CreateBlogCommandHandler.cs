@@ -4,16 +4,16 @@ using MediatR;
 
 namespace BlogApp.Application.Commands.Blogs.Create;
 
-public class CreateBlogCommandHandler(IBlogService blogService) : IRequestHandler<CreateBlogCommand, Guid>
+public class CreateBlogCommandHandler(IBlogService blogService) : IRequestHandler<CreateBlogCommand, CreateBlogResult>
 {
     private readonly IBlogService _blogService = blogService;
 
-    public async Task<Guid> Handle(CreateBlogCommand request, CancellationToken cancellationToken)
+    public async Task<CreateBlogResult> Handle(CreateBlogCommand request, CancellationToken cancellationToken)
     {
 
         Blog blog = ToEntity(request);
         await _blogService.CreateBlogAsync(blog);
-        return blog.Id;
+        return new CreateBlogResult(blog.Id);
     }
 
     private static Blog ToEntity(CreateBlogCommand request)
@@ -22,7 +22,7 @@ public class CreateBlogCommandHandler(IBlogService blogService) : IRequestHandle
         {
             Title = request.Title,
             Content = request.Content,
-            AuthorId = request.AuthorId,
+            AuthorId = Guid.NewGuid(),
         };
     }
 }

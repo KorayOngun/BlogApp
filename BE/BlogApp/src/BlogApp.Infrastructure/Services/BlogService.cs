@@ -13,6 +13,7 @@ public class BlogService(
     public async Task<Guid> CreateBlogAsync(Blog blog)
     {
         await _blogRepository.AddAsync(blog);
+        await _blogRepository.SaveChangesAsync();
         return blog.Id;
     }
 }

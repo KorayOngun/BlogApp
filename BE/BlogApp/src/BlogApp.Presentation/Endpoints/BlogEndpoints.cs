@@ -1,5 +1,6 @@
-﻿using BlogApp.Application.Commands.Blogs.Create;
-using BlogApp.Application.Queries.Blog.GetById;
+﻿using BlogApp.Application.Queries.Blog.GetById;
+using BlogApp.MessageContracts.Requests.Blogs;
+using BlogApp.Presentation.Mappers.Blogs;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,11 +15,9 @@ public static class BlogEndpoints
         {
             var command = request.ToCommand();
             var result = await mediator.Send(command);
-            return Results.Created("", result);
+            return Results.Ok(result.ToResponse());
         })
-        .WithName("CreateBlog")
-        .Produces<BlogApp.Core.Entities.Blog>(StatusCodes.Status201Created)
-        .Produces(StatusCodes.Status400BadRequest);
+        .WithName("CreateBlog");
 
 
         app.MapGet("/blogs/{id:guid}", async ([FromRoute] Guid id,
@@ -32,18 +31,7 @@ public static class BlogEndpoints
 }
 
 
-public record CreateBlogRequest(string Title, string Content)
-{
-    public CreateBlogCommand ToCommand()
-    {
-        return new CreateBlogCommand
-        {
-            Title = Title,
-            Content = Content,
-            AuthorId = Guid.NewGuid() // Assuming AuthorId is generated or passed in some way
-        };
-    }
-}
+
 
 public record GetBlogByIdRequest(Guid Id)
 {

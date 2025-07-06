@@ -6,4 +6,5 @@ public interface IBlogRepository
 {
     Task AddAsync(Blog blog);
     Task<Blog?> GetByIdAsync(Guid id);
+    Task SaveChangesAsync();
 }
