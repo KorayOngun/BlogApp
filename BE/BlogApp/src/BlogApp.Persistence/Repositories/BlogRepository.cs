@@ -1,5 +1,6 @@
 ﻿using BlogApp.Core.Repository;
 using BlogApp.Persistence.Contexts;
+using Microsoft.EntityFrameworkCore;
 
 namespace BlogApp.Persistence.Repositories;
 
@@ -20,4 +21,7 @@ public class BlogRepository(BlogAppContext blogAppContext) : IBlogRepository
     {
         await _blogAppContext.SaveChangesAsync();
     }
+
+    public async Task<bool> UniqueTitleControl(Guid authorId, string title) =>
+        await _blogAppContext.Blogs.AnyAsync(x => x.AuthorId == authorId && x.Title == title);
 }

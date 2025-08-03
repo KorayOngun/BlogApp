@@ -7,11 +7,24 @@ public static class ServiceRegistration
 {
     public static void AddPersistenceServices(this IServiceCollection services)
     {
+        services.AddScoped<Core.Repository.IBlogRepository, Repositories.BlogRepository>();
+    }
+    public static void AddBlogAppDbContext(this IServiceCollection services, BlogAppDbContextOptions? blogAppOptions = null)
+    {
         services.AddDbContext<Contexts.BlogAppContext>(options =>
         {
             options.UseInMemoryDatabase("BlogApp");
         });
-
-        services.AddScoped<Core.Repository.IBlogRepository, Repositories.BlogRepository>();
     }
+}
+
+public record BlogAppDbContextOptions()
+{
+    public DatabaseProvider dbProvider = DatabaseProvider.InMemoryDatabase;
+}
+public enum DatabaseProvider
+{
+    InMemoryDatabase,
+    PSQL,
+    MSSQL
 }

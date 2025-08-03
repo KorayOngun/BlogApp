@@ -1,4 +1,4 @@
-﻿namespace BlogApp.Core;
+﻿        namespace BlogApp.Core;
 
 public class BaseEntity
 {

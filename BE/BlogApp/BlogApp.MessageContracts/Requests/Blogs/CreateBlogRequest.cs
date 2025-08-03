@@ -2,6 +2,6 @@
 
 public record CreateBlogRequest
 {
-    public string Title { get; init; }
-    public string Content { get; init; }
+    public required string Title { get; init; }
+    public required string Content { get; init; }
 }

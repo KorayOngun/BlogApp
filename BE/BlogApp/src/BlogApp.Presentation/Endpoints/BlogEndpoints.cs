@@ -8,9 +8,9 @@ namespace BlogApp.Presentation.Endpoints;
 
 public static class BlogEndpoints
 {
-    public static void MapBlogEndpoints(this IEndpointRouteBuilder app)
+    public static IEndpointRouteBuilder MapBlogEndpoints(this IEndpointRouteBuilder app)
     {
-        app.MapPost("/blogs", async ([FromBody] CreateBlogRequest request,
+        app.MapPost("/", async ([FromBody] CreateBlogRequest request,
             IMediator mediator) =>
         {
             var command = request.ToCommand();
@@ -18,28 +18,18 @@ public static class BlogEndpoints
             return Results.Ok(result.ToResponse());
         })
         .WithName("CreateBlog");
+            
 
-
-        app.MapGet("/blogs/{id:guid}", async ([FromRoute] Guid id,
+        app.MapGet("/{id:guid}", async ([FromRoute] Guid id,
             IMediator mediator) =>
         {
-            var query =  new GetBlogByIdRequest(id).ToQuery();
+            var query = new GetBlogByIdQuery() { Id = id };
             var result = await mediator.Send(query);
             return result;
-        });
+        })
+        .WithName("GetById");
+        
+        return app;
     }
 }
 
-
-
-
-public record GetBlogByIdRequest(Guid Id)
-{
-    public GetBlogByIdQuery ToQuery()
-    {
-        return new GetBlogByIdQuery
-        {
-            Id = Id
-        };
-    }
-}
