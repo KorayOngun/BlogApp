@@ -7,5 +7,5 @@ public interface IBlogRepository
     Task AddAsync(Blog blog);
     Task<Blog?> GetByIdAsync(Guid id);
     Task SaveChangesAsync();
-    Task<bool> UniqueTitleControl(Guid authorId, string title);
+    Task<bool> TitleIsExist(Guid authorId, string title);
 }

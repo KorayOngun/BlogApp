@@ -13,15 +13,10 @@ public class BlogRepository(BlogAppContext blogAppContext) : IBlogRepository
         await _blogAppContext.Blogs.AddAsync(blog);
     }
 
-    public async Task<BlogApp.Core.Entities.Blog?> GetByIdAsync(Guid id)
-    {
-        return await _blogAppContext.Blogs.FindAsync(id);
-    }
-    public async Task SaveChangesAsync()
-    {
-        await _blogAppContext.SaveChangesAsync();
-    }
+    public async Task<BlogApp.Core.Entities.Blog?> GetByIdAsync(Guid id) => await _blogAppContext.Blogs.FindAsync(id);
+    
+    public async Task SaveChangesAsync() => await _blogAppContext.SaveChangesAsync();
 
-    public async Task<bool> UniqueTitleControl(Guid authorId, string title) =>
+    public async Task<bool> TitleIsExist(Guid authorId, string title) =>
         await _blogAppContext.Blogs.AnyAsync(x => x.AuthorId == authorId && x.Title == title);
 }
