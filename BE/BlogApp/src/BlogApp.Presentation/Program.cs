@@ -4,6 +4,7 @@ using BlogApp.Infrastructure;
 using BlogApp.Presentation.Endpoints;
 using BlogApp.Core.Services;
 using BlogApp.Presentation.Services;
+using BlogApp.Core;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,8 +16,9 @@ builder.Services.AddBlogAppDbContext();
 builder.Services.AddPersistenceServices();
 builder.Services.AddApplicationServices();
 builder.Services.AddInfrastructureServices();
+builder.Services.AddDomainServices();
 
-builder.Services.AddSingleton<IUserHandlerService, UserHandlerService>();
+builder.Services.AddScoped<IUserHandlerService, UserHandlerService>();
 builder.Services.AddScoped<IBlogService, BlogService>();
 
 var app = builder.Build();

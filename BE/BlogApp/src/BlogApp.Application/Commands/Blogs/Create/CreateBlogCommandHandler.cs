@@ -21,7 +21,8 @@ public class CreateBlogCommandHandler : IRequestHandler<CreateBlogCommand, Creat
         Blog blog = ToEntity(request);
 
         await _blogService.EnsureUniqueTitle(blog, cancellationToken);
-        
+
+        await _blogRepository.AddAsync(blog);
         await _blogRepository.SaveChangesAsync();
         return new CreateBlogResult(blog.Id);
     }
