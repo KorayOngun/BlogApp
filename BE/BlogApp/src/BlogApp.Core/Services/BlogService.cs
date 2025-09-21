@@ -11,10 +11,15 @@ public class BlogService : IBlogService
         _blogRepository = blogRepository;
     }
 
-    public async Task EnsureUniqueTitle(Blog blog, CancellationToken cancellationToken)
+    private async Task EnsureUniqueTitle(Blog blog, CancellationToken cancellationToken)
     {
-        if(await _blogRepository.TitleIsExist(blog.AuthorId, blog.Title))
-           throw new Exception($"title is exist {blog.Title}");
+        if (await _blogRepository.TitleIsExist(blog.AuthorId, blog.Title))
+            throw new Exception($"title is exist {blog.Title}");
     }
 
+    public async Task AddAsync(Blog blog, CancellationToken cancellationToken)
+    {
+        await EnsureUniqueTitle(blog, cancellationToken);
+        await _blogRepository.AddAsync(blog);
+    }
 }

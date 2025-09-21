@@ -4,5 +4,5 @@ namespace BlogApp.Core.Services;
 
 public interface IBlogService
 {
-  Task EnsureUniqueTitle(Blog blog, CancellationToken cancellationToken);
+    Task AddAsync(Blog blog, CancellationToken cancellationToken);
 }
