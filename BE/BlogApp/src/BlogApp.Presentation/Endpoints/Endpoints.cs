@@ -5,7 +5,7 @@ public static class Endpoints
     public static void MapEndpoints(this IEndpointRouteBuilder app)
     {
         app
-           .MapGroup("Blog")
+           .MapGroup("blogs")
            .WithTags("Blogs")
            .MapBlogEndpoints();
            

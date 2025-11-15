@@ -17,6 +17,6 @@ public class BlogRepository(BlogAppContext blogAppContext) : IBlogRepository
     
     public async Task SaveChangesAsync() => await _blogAppContext.SaveChangesAsync();
 
-    public async Task<bool> TitleIsExist(Guid authorId, string title) =>
-        await _blogAppContext.Blogs.AnyAsync(x => x.AuthorId == authorId && x.Title == title);
+    public async Task<bool> TitleIsExist(Guid authorId, string title, CancellationToken cancellationToken) =>
+        await _blogAppContext.Blogs.AnyAsync(x => x.AuthorId == authorId && x.Title == title, cancellationToken);
 }
