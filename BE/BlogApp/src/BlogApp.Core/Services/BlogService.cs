@@ -19,6 +19,7 @@ public class BlogService(IBlogRepository blogRepository) : IBlogService
         var titleControl = await EnsureUniqueTitle(blog, cancellationToken);
         if (!titleControl)
             throw new Exception();
+
         await _blogRepository.AddAsync(blog);
     }
 }

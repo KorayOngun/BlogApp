@@ -5,9 +5,8 @@ using MediatR;
 
 namespace BlogApp.Application.Commands.Blogs.Create;
 
-public class CreateBlogCommandHandler(IBlogRepository blogRepository, IUserHandlerService userHandlerService, IBlogService blogService, IUnitOfWork unitOfWork) : IRequestHandler<CreateBlogCommand, CreateBlogResult>
+public class CreateBlogCommandHandler(IUserHandlerService userHandlerService, IBlogService blogService, IUnitOfWork unitOfWork) : IRequestHandler<CreateBlogCommand, CreateBlogResult>
 {
-    private readonly IBlogRepository _blogRepository = blogRepository;
     private readonly IBlogService _blogService = blogService;
     private readonly IUserHandlerService _userHandlerService = userHandlerService;
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
