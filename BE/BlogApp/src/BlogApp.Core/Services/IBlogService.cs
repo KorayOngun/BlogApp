@@ -4,5 +4,5 @@ namespace BlogApp.Core.Services;
 
 public interface IBlogService
 {
-    Task AddAsync(Blog blog, CancellationToken cancellationToken);
+    bool ValidateBlog(Blog blog);
 }

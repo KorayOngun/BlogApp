@@ -1,6 +1,5 @@
 using BlogApp.Persistence;
 using BlogApp.Application;
-using BlogApp.Infrastructure;
 using BlogApp.Presentation.Endpoints;
 using BlogApp.Core.Services;
 using BlogApp.Presentation.Services;
@@ -14,7 +13,6 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddBlogAppDbContext();
 builder.Services.AddPersistenceServices();
 builder.Services.AddApplicationServices();
-builder.Services.AddInfrastructureServices();
 builder.Services.AddDomainServices();
 
 builder.Services.AddScoped<IUserHandlerService, UserHandlerService>();
