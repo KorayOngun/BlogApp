@@ -1,4 +1,4 @@
-﻿using BlogApp.Application.Commands.Blogs.Create;
+﻿using BlogApp.Application.Mappers;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace BlogApp.Application;
