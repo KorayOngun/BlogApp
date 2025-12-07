@@ -9,37 +9,30 @@ public class CreateBlogCommandHandler(
     IUserHandlerService userHandlerService,
     IBlogService blogService,
     IBlogRepository blogRepository,
-    IUnitOfWork unitOfWork) : IRequestHandler<CreateBlogCommand, CreateBlogResult>
+    IUnitOfWork unitOfWork,
+    IBlogMapper blogMapper) : IRequestHandler<CreateBlogCommand, CreateBlogResult>
 {
     private readonly IBlogService _blogService = blogService;
     private readonly IUserHandlerService _userHandlerService = userHandlerService;
     private readonly IBlogRepository _blogRepository = blogRepository;
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
+    private readonly IBlogMapper _blogMapper = blogMapper;
 
     public async Task<CreateBlogResult> Handle(CreateBlogCommand request, CancellationToken cancellationToken)
     {
-        Blog blog = ToEntity(request);
+        var authorId = _userHandlerService.GetUserId();
+        Blog blog = _blogMapper.MapToEntity(request, authorId);
 
         if (!_blogService.ValidateBlog(blog))
-            throw new Exception();
+            throw new Exception("Blog validation failed");
 
         if(await _blogRepository.TitleIsExist(blog.AuthorId, blog.Title, cancellationToken))
-            throw new Exception();
+            throw new Exception($"Blog with title '{blog.Title}' already exists");
 
         await _blogRepository.AddAsync(blog);
 
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         return new CreateBlogResult(blog.Id);
-    }
-
-    private Blog ToEntity(CreateBlogCommand request)
-    {
-        return new Blog
-        {
-            Title = request.Title,
-            Content = request.Content,
-            AuthorId = _userHandlerService.GetUserId(),
-        };
     }
 }

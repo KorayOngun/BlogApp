@@ -9,7 +9,7 @@ public class BlogService : IBlogService
         if (blog.AuthorId == Guid.Empty)
             return false;
 
-        if(string.IsNullOrEmpty(blog.Title))
+        if(string.IsNullOrWhiteSpace(blog.Title))
             return false;
 
         return true;
