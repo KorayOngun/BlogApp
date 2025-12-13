@@ -18,7 +18,7 @@ public class Result
         Success = success;
     }
 
-    protected Result(bool success, string message)
+    protected Result(bool success, string? message)
     {
         Success = success;
         Message = message;
@@ -36,27 +36,34 @@ public class Result
 }
 
 
-public class Result<T> : Result
+public sealed class Result<T> : Result
 {
     public T? Value { get; }
 
-    private Result(T value) : base(true)
+    private Result(bool success, T? value = default, string? message = null)
+        : base(success, message)
     {
         Value = value;
     }
 
-    private Result(bool success) : base(success) { }
+    public static Result<T> Ok(T value)
+        => new(true, value);
 
-    private Result(bool success, string message) : base(success, message) { }
 
-    public static new Result<T> Error() => new(false);
+    public bool TryGetValue(out T value)
+    {
+        if (IsOk && Value is not null)
+        {
+            value = Value;
+            return true;
+        }
 
-    public static new Result<T> Error(string message) => new(false, message);
+        value = default!;
+        return false;
+    }
 
-    public static implicit operator Result<T>(T data) => new(data);
-
-    public static implicit operator bool(Result<T> result) => result.Success;
-    public static implicit operator Result<T>(Error error) => !string.IsNullOrEmpty(error.message) ? new(false, error.message) : new(false);
+    public static implicit operator Result<T>(Error e) => new(false, default, e.message);
+    public static implicit operator Result<T>(T data) => new(true, data);
 }
 
 public record Error(string? message) 
