@@ -33,7 +33,7 @@ public class CreateBlogCommandHandler(
         
         var titleControl = await _blogService.IsTitleExistForAuthorAsync(blog.AuthorId, blog.Title, cancellationToken);
         if (titleControl)
-            return Result<CreateBlogResponse>.Error("A blog with this title already exists for the author.");
+            return Result.Error("A blog with this title already exists for the author.").AsError();
 
         await _blogRepository.AddAsync(blog);
 

@@ -62,11 +62,8 @@ public sealed class Result<T> : Result
         return false;
     }
 
-    public static implicit operator Result<T>(Error e) => new(false, default, e.message);
+    public static implicit operator Result<T>(Error e) => new(false, default, e.Message);
     public static implicit operator Result<T>(T data) => new(true, data);
 }
 
-public record Error(string? message) 
-{
-    public string? Message { get; }
-};
+public record Error(string? Message);
