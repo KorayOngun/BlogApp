@@ -1,9 +1,10 @@
-﻿using MediatR;
+﻿using BlogApp.MessageContracts.Requests.Blogs;
+using BlogApp.MessageContracts.Responses.Blogs;
+using MediatR;
 
 namespace BlogApp.Application.Commands.Blogs.Create;
 
-public class CreateBlogCommand : IRequest<CreateBlogResult>
+public class CreateBlogCommand(CreateBlogRequest request) : IRequest<CreateBlogResponse>
 {
-    public required string Title { get; set; }
-    public required string Content { get; set; }
+    public CreateBlogRequest Request => request;
 }

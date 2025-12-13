@@ -2,6 +2,7 @@
 using BlogApp.Core.Entities;
 using BlogApp.Core.Repository;
 using BlogApp.Core.Services;
+using BlogApp.MessageContracts.Responses.Blogs;
 using MediatR;
 
 namespace BlogApp.Application.Commands.Blogs.Create;
@@ -11,7 +12,7 @@ public class CreateBlogCommandHandler(
     IBlogService blogService,
     IBlogRepository blogRepository,
     IUnitOfWork unitOfWork,
-    IBlogMapper blogMapper) : IRequestHandler<CreateBlogCommand, CreateBlogResult>
+    IBlogMapper blogMapper) : IRequestHandler<CreateBlogCommand, CreateBlogResponse>
 {
     private readonly IBlogService _blogService = blogService;
     private readonly IUserHandlerService _userHandlerService = userHandlerService;
@@ -19,7 +20,7 @@ public class CreateBlogCommandHandler(
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
     private readonly IBlogMapper _blogMapper = blogMapper;
 
-    public async Task<CreateBlogResult> Handle(CreateBlogCommand request, CancellationToken cancellationToken)
+    public async Task<CreateBlogResponse> Handle(CreateBlogCommand request, CancellationToken cancellationToken)
     {
         var authorId = _userHandlerService.GetUserId();
         Blog blog = _blogMapper.MapToEntity(request, authorId);
@@ -34,6 +35,6 @@ public class CreateBlogCommandHandler(
 
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-        return new CreateBlogResult(blog.Id);
+        return new CreateBlogResponse(blog.Id);
     }
 }

@@ -3,6 +3,7 @@ using BlogApp.Application.Mappers;
 using BlogApp.Core.Entities;
 using BlogApp.Core.Repository;
 using BlogApp.Core.Services;
+using BlogApp.MessageContracts.Requests.Blogs;
 using FluentAssertions;
 using NSubstitute;
 
@@ -42,17 +43,18 @@ public class CreateBlogCommandHandlerTests
     {
         // Arrange
         var expectedUserId = Guid.NewGuid();
-        var command = new CreateBlogCommand
+        var request = new CreateBlogRequest
         {
             Title = "Test Blog Title",
             Content = "Test Blog Content"
         };
+        var command = new CreateBlogCommand(request);
 
         var mappedBlog = new Blog
         {
             Id = Guid.NewGuid(),
-            Title = command.Title,
-            Content = command.Content,
+            Title = request.Title,
+            Content = request.Content,
             AuthorId = expectedUserId
         };
 
@@ -81,8 +83,8 @@ public class CreateBlogCommandHandlerTests
         // Assert
         capturedBlog.Should().NotBeNull("Blog repository'ye eklenmeli");
         capturedBlog!.AuthorId.Should().Be(expectedUserId, "UserHandlerService'den gelen UserId set edilmeli");
-        capturedBlog.Title.Should().Be(command.Title);
-        capturedBlog.Content.Should().Be(command.Content);
+        capturedBlog.Title.Should().Be(request.Title);
+        capturedBlog.Content.Should().Be(request.Content);
 
         // IUserHandlerService.GetUserId() çaðrýldý mý?
         _mockUserHandlerService.Received(1).GetUserId();
@@ -96,17 +98,18 @@ public class CreateBlogCommandHandlerTests
     {
         // Arrange
         var userId = Guid.NewGuid();
-        var command = new CreateBlogCommand
+        var request = new CreateBlogRequest
         {
             Title = "Test Title",
             Content = "Test Content"
         };
+        var command = new CreateBlogCommand(request);
 
         _mockUserHandlerService.GetUserId().Returns(userId);
         _mockBlogMapper.MapToEntity(command, userId).Returns(new Blog
         {
-            Title = command.Title,
-            Content = command.Content,
+            Title = request.Title,
+            Content = request.Content,
             AuthorId = userId
         });
         _mockBlogService.ValidateBlog(Arg.Any<Blog>()).Returns(true);
@@ -126,17 +129,18 @@ public class CreateBlogCommandHandlerTests
     {
         // Arrange
         var validUserId = Guid.NewGuid();
-        var command = new CreateBlogCommand
+        var request = new CreateBlogRequest
         {
             Title = "Test Title",
             Content = "Test Content"
         };
+        var command = new CreateBlogCommand(request);
 
         _mockUserHandlerService.GetUserId().Returns(validUserId);
         _mockBlogMapper.MapToEntity(command, validUserId).Returns(new Blog
         {
-            Title = command.Title,
-            Content = command.Content,
+            Title = request.Title,
+            Content = request.Content,
             AuthorId = validUserId
         });
         _mockBlogService.ValidateBlog(Arg.Any<Blog>()).Returns(true);
@@ -161,17 +165,18 @@ public class CreateBlogCommandHandlerTests
     {
         // Arrange
         var expectedUserId = Guid.NewGuid();
-        var command = new CreateBlogCommand
+        var request = new CreateBlogRequest
         {
             Title = "Unique Title",
             Content = "Content"
         };
+        var command = new CreateBlogCommand(request);
 
         _mockUserHandlerService.GetUserId().Returns(expectedUserId);
         _mockBlogMapper.MapToEntity(command, expectedUserId).Returns(new Blog
         {
-            Title = command.Title,
-            Content = command.Content,
+            Title = request.Title,
+            Content = request.Content,
             AuthorId = expectedUserId
         });
         _mockBlogService.ValidateBlog(Arg.Any<Blog>()).Returns(true);
@@ -186,7 +191,7 @@ public class CreateBlogCommandHandlerTests
         // TitleIsExist çaðrýsýnda AuthorId doðru gönderildi mi?
         await _mockBlogRepository.Received(1).TitleIsExist(
             expectedUserId, // UserHandlerService'den gelen ID
-            command.Title,
+            request.Title,
             Arg.Any<CancellationToken>());
     }
 
@@ -195,17 +200,18 @@ public class CreateBlogCommandHandlerTests
     {
         // Arrange
         var userId = Guid.Parse("12345678-1234-1234-1234-123456789012");
-        var command = new CreateBlogCommand
+        var request = new CreateBlogRequest
         {
             Title = "My Blog Post",
             Content = "This is the content of my blog."
         };
+        var command = new CreateBlogCommand(request);
 
         _mockUserHandlerService.GetUserId().Returns(userId);
         _mockBlogMapper.MapToEntity(command, userId).Returns(new Blog
         {
-            Title = command.Title,
-            Content = command.Content,
+            Title = request.Title,
+            Content = request.Content,
             AuthorId = userId
         });
         _mockBlogService.ValidateBlog(Arg.Any<Blog>()).Returns(true);
@@ -232,17 +238,18 @@ public class CreateBlogCommandHandlerTests
     {
         // Arrange
         var userId = Guid.NewGuid();
-        var command = new CreateBlogCommand
+        var request = new CreateBlogRequest
         {
             Title = "",
             Content = "Content"
         };
+        var command = new CreateBlogCommand(request);
 
         _mockUserHandlerService.GetUserId().Returns(userId);
         _mockBlogMapper.MapToEntity(command, userId).Returns(new Blog
         {
-            Title = command.Title,
-            Content = command.Content,
+            Title = request.Title,
+            Content = request.Content,
             AuthorId = userId
         });
         _mockBlogService.ValidateBlog(Arg.Any<Blog>()).Returns(false); // Validation FAILED
@@ -260,17 +267,18 @@ public class CreateBlogCommandHandlerTests
     {
         // Arrange
         var userId = Guid.NewGuid();
-        var command = new CreateBlogCommand
+        var request = new CreateBlogRequest
         {
             Title = "Duplicate Title",
             Content = "Content"
         };
+        var command = new CreateBlogCommand(request);
 
         _mockUserHandlerService.GetUserId().Returns(userId);
         _mockBlogMapper.MapToEntity(command, userId).Returns(new Blog
         {
-            Title = command.Title,
-            Content = command.Content,
+            Title = request.Title,
+            Content = request.Content,
             AuthorId = userId
         });
         _mockBlogService.ValidateBlog(Arg.Any<Blog>()).Returns(true);
@@ -291,18 +299,19 @@ public class CreateBlogCommandHandlerTests
         // Arrange
         var userId = Guid.NewGuid();
         var blogId = Guid.NewGuid();
-        var command = new CreateBlogCommand
+        var request = new CreateBlogRequest
         {
             Title = "Test",
             Content = "Content"
         };
+        var command = new CreateBlogCommand(request);
 
         _mockUserHandlerService.GetUserId().Returns(userId);
         _mockBlogMapper.MapToEntity(command, userId).Returns(new Blog
         {
             Id = blogId,
-            Title = command.Title,
-            Content = command.Content,
+            Title = request.Title,
+            Content = request.Content,
             AuthorId = userId
         });
         _mockBlogService.ValidateBlog(Arg.Any<Blog>()).Returns(true);

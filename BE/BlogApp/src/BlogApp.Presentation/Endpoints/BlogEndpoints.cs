@@ -1,6 +1,6 @@
-﻿using BlogApp.Application.Queries.Blog.GetById;
+﻿using BlogApp.Application.Commands.Blogs.Create;
+using BlogApp.Application.Queries.Blog.GetById;
 using BlogApp.MessageContracts.Requests.Blogs;
-using BlogApp.Presentation.Mappers.Blogs;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,9 +13,9 @@ public static class BlogEndpoints
         app.MapPost("/create", async ([FromBody] CreateBlogRequest request,
             IMediator mediator) =>
         {
-            var command = request.ToCommand();
+            var command = new CreateBlogCommand(request);
             var result = await mediator.Send(command);
-            return result.ToResponse();
+            return result;
         }).WithName("CreateBlog");
             
 

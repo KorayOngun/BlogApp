@@ -1,13 +1,12 @@
 using BlogApp.Application.Commands.Blogs.Create;
 using BlogApp.Application.Mappers;
 using BlogApp.Core.Entities;
+using BlogApp.MessageContracts.Requests.Blogs;
 using FluentAssertions;
 
 namespace BlogApp.Application.UnitTests.Commands.Blogs.Create;
 
-/// <summary>
-/// BlogMapper testleri - Artýk mapper ayrý test edilebilir!
-/// </summary>
+
 [TestFixture]
 public class BlogMapperTests
 {
@@ -24,11 +23,12 @@ public class BlogMapperTests
     {
         // Arrange
         var authorId = Guid.NewGuid();
-        var command = new CreateBlogCommand
+        var request = new CreateBlogRequest
         {
             Title = "Test Blog Title",
             Content = "Test Blog Content"
         };
+        var command = new CreateBlogCommand(request);
 
         // Act
         var result = _mapper.MapToEntity(command, authorId);
@@ -36,8 +36,8 @@ public class BlogMapperTests
         // Assert
         result.Should().NotBeNull();
         result.Id.Should().NotBe(Guid.Empty, "Id should be generated");
-        result.Title.Should().Be(command.Title);
-        result.Content.Should().Be(command.Content);
+        result.Title.Should().Be(request.Title);
+        result.Content.Should().Be(request.Content);
         result.AuthorId.Should().Be(authorId);
         result.CreatedAt.Should().BeCloseTo(DateTime.UtcNow, TimeSpan.FromSeconds(1));
         result.UpdatedAt.Should().BeCloseTo(DateTime.UtcNow, TimeSpan.FromSeconds(1));
@@ -47,11 +47,12 @@ public class BlogMapperTests
     public void MapToEntity_Should_Generate_Unique_Ids()
     {
         // Arrange
-        var command = new CreateBlogCommand
+        var request = new CreateBlogRequest
         {
             Title = "Test",
             Content = "Content"
         };
+        var command = new CreateBlogCommand(request);
 
         // Act
         var blog1 = _mapper.MapToEntity(command, Guid.NewGuid());
@@ -65,11 +66,12 @@ public class BlogMapperTests
     public void MapToEntity_Should_Set_CreatedAt_And_UpdatedAt_To_Same_Time()
     {
         // Arrange
-        var command = new CreateBlogCommand
+        var request = new CreateBlogRequest
         {
             Title = "Test",
             Content = "Content"
         };
+        var command = new CreateBlogCommand(request);
 
         // Act
         var result = _mapper.MapToEntity(command, Guid.NewGuid());
@@ -84,11 +86,12 @@ public class BlogMapperTests
     public void MapToEntity_Should_Handle_Various_Title_Lengths(string title)
     {
         // Arrange
-        var command = new CreateBlogCommand
+        var request = new CreateBlogRequest
         {
             Title = title,
             Content = "Content"
         };
+        var command = new CreateBlogCommand(request);
 
         // Act
         var result = _mapper.MapToEntity(command, Guid.NewGuid());
@@ -102,11 +105,12 @@ public class BlogMapperTests
     {
         // Arrange
         var expectedAuthorId = Guid.Parse("12345678-1234-1234-1234-123456789012");
-        var command = new CreateBlogCommand
+        var request = new CreateBlogRequest
         {
             Title = "Test",
             Content = "Content"
         };
+        var command = new CreateBlogCommand(request);
 
         // Act
         var result = _mapper.MapToEntity(command, expectedAuthorId);
@@ -119,11 +123,12 @@ public class BlogMapperTests
     public void MapToEntity_Should_Return_Blog_Type()
     {
         // Arrange
-        var command = new CreateBlogCommand
+        var request = new CreateBlogRequest
         {
             Title = "Test",
             Content = "Content"
         };
+        var command = new CreateBlogCommand(request);
 
         // Act
         var result = _mapper.MapToEntity(command, Guid.NewGuid());

@@ -17,8 +17,8 @@ public class BlogMapper : IBlogMapper
         return new Blog
         {
             Id = Guid.NewGuid(),
-            Title = command.Title,
-            Content = command.Content,
+            Title = command.Request.Title,
+            Content = command.Request.Content,
             AuthorId = authorId,
             CreatedAt = date,
             UpdatedAt = date
