@@ -17,7 +17,6 @@ public static class BlogEndpoints
             var result = await mediator.Send(command);
             return result;
         }).WithName("CreateBlog");
-            
 
         app.MapGet("/get/{id:guid}", async ([FromRoute] Guid id,
             IMediator mediator) =>

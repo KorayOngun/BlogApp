@@ -2,6 +2,7 @@
 using BlogApp.Core.Entities;
 using BlogApp.Core.Repository;
 using BlogApp.Core.Services;
+using BlogApp.Core.ValueObjects;
 using BlogApp.MessageContracts.Responses.Blogs;
 using MediatR;
 
@@ -12,7 +13,8 @@ public class CreateBlogCommandHandler(
     IBlogService blogService,
     IBlogRepository blogRepository,
     IUnitOfWork unitOfWork,
-    IBlogMapper blogMapper) : IRequestHandler<CreateBlogCommand, CreateBlogResponse>
+    IBlogMapper blogMapper) : IRequestHandler<CreateBlogCommand, Result<CreateBlogResponse>>
+            
 {
     private readonly IBlogService _blogService = blogService;
     private readonly IUserHandlerService _userHandlerService = userHandlerService;
@@ -20,16 +22,18 @@ public class CreateBlogCommandHandler(
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
     private readonly IBlogMapper _blogMapper = blogMapper;
 
-    public async Task<CreateBlogResponse> Handle(CreateBlogCommand request, CancellationToken cancellationToken)
+    public async Task<Result<CreateBlogResponse>> Handle(CreateBlogCommand request, CancellationToken cancellationToken)
     {
         var authorId = _userHandlerService.GetUserId();
         Blog blog = _blogMapper.MapToEntity(request, authorId);
 
-        if (!_blogService.ValidateBlog(blog))
-            throw new Exception("Blog validation failed");
-
-        if(await _blogRepository.TitleIsExist(blog.AuthorId, blog.Title, cancellationToken))
-            throw new Exception($"Blog with title '{blog.Title}' already exists");
+        var validateResult = _blogService.ValidateBlog(blog);
+        if (validateResult.IsError)
+            return validateResult.AsError();
+        
+        var titleControl = await _blogService.IsTitleExistForAuthorAsync(blog.AuthorId, blog.Title, cancellationToken);
+        if (titleControl)
+            return Result<CreateBlogResponse>.Error("A blog with this title already exists for the author.");
 
         await _blogRepository.AddAsync(blog);
 

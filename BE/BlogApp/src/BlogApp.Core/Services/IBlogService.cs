@@ -1,8 +1,10 @@
 using BlogApp.Core.Entities;
+using BlogApp.Core.ValueObjects;
 
 namespace BlogApp.Core.Services;
 
 public interface IBlogService
 {
-    bool ValidateBlog(Blog blog);
+    Result ValidateBlog(Blog blog);
+    Task<bool> IsTitleExistForAuthorAsync(Guid authorId, string title, CancellationToken cancellationToken);
 }

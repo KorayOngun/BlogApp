@@ -3,6 +3,7 @@ using BlogApp.Application.Mappers;
 using BlogApp.Core.Entities;
 using BlogApp.Core.Repository;
 using BlogApp.Core.Services;
+using BlogApp.Core.ValueObjects;
 using BlogApp.MessageContracts.Requests.Blogs;
 using FluentAssertions;
 using NSubstitute;
@@ -65,7 +66,7 @@ public class CreateBlogCommandHandlerTests
         _mockBlogMapper.MapToEntity(command, expectedUserId).Returns(mappedBlog);
 
         // Mock: BlogService validation baþarýlý
-        _mockBlogService.ValidateBlog(Arg.Any<Blog>()).Returns(true);
+        _mockBlogService.ValidateBlog(Arg.Any<Blog>()).Returns(Result.Ok());
 
         // Mock: Title unique (mevcut deðil)
         _mockBlogRepository.TitleIsExist(Arg.Any<Guid>(), Arg.Any<string>(), Arg.Any<CancellationToken>())
@@ -112,7 +113,7 @@ public class CreateBlogCommandHandlerTests
             Content = request.Content,
             AuthorId = userId
         });
-        _mockBlogService.ValidateBlog(Arg.Any<Blog>()).Returns(true);
+        _mockBlogService.ValidateBlog(Arg.Any<Blog>()).Returns(Result.Ok());
         _mockBlogRepository.TitleIsExist(Arg.Any<Guid>(), Arg.Any<string>(), Arg.Any<CancellationToken>())
             .Returns(false);
         _mockUnitOfWork.SaveChangesAsync(Arg.Any<CancellationToken>()).Returns(1);
@@ -143,7 +144,7 @@ public class CreateBlogCommandHandlerTests
             Content = request.Content,
             AuthorId = validUserId
         });
-        _mockBlogService.ValidateBlog(Arg.Any<Blog>()).Returns(true);
+        _mockBlogService.ValidateBlog(Arg.Any<Blog>()).Returns(Result.Ok());
         _mockBlogRepository.TitleIsExist(Arg.Any<Guid>(), Arg.Any<string>(), Arg.Any<CancellationToken>())
             .Returns(false);
         _mockUnitOfWork.SaveChangesAsync(Arg.Any<CancellationToken>()).Returns(1);
@@ -179,8 +180,8 @@ public class CreateBlogCommandHandlerTests
             Content = request.Content,
             AuthorId = expectedUserId
         });
-        _mockBlogService.ValidateBlog(Arg.Any<Blog>()).Returns(true);
-        _mockBlogRepository.TitleIsExist(Arg.Any<Guid>(), Arg.Any<string>(), Arg.Any<CancellationToken>())
+        _mockBlogService.ValidateBlog(Arg.Any<Blog>()).Returns(Result.Ok());
+        _mockBlogService.IsTitleExistForAuthorAsync(Arg.Any<Guid>(), Arg.Any<string>(), Arg.Any<CancellationToken>())
             .Returns(false);
         _mockUnitOfWork.SaveChangesAsync(Arg.Any<CancellationToken>()).Returns(1);
 
@@ -188,8 +189,8 @@ public class CreateBlogCommandHandlerTests
         await _handler.Handle(command, CancellationToken.None);
 
         // Assert
-        // TitleIsExist çaðrýsýnda AuthorId doðru gönderildi mi?
-        await _mockBlogRepository.Received(1).TitleIsExist(
+        // IsTitleExistForAuthorAsync çaðrýsýnda AuthorId doðru gönderildi mi?
+        await _mockBlogService.Received(1).IsTitleExistForAuthorAsync(
             expectedUserId, // UserHandlerService'den gelen ID
             request.Title,
             Arg.Any<CancellationToken>());
@@ -214,7 +215,7 @@ public class CreateBlogCommandHandlerTests
             Content = request.Content,
             AuthorId = userId
         });
-        _mockBlogService.ValidateBlog(Arg.Any<Blog>()).Returns(true);
+        _mockBlogService.ValidateBlog(Arg.Any<Blog>()).Returns(Result.Ok());
         _mockBlogRepository.TitleIsExist(Arg.Any<Guid>(), Arg.Any<string>(), Arg.Any<CancellationToken>())
             .Returns(false);
         _mockUnitOfWork.SaveChangesAsync(Arg.Any<CancellationToken>()).Returns(1);
@@ -252,7 +253,7 @@ public class CreateBlogCommandHandlerTests
             Content = request.Content,
             AuthorId = userId
         });
-        _mockBlogService.ValidateBlog(Arg.Any<Blog>()).Returns(false); // Validation FAILED
+        _mockBlogService.ValidateBlog(Arg.Any<Blog>()).Returns(Result.Error()); // Validation FAILED
 
         // Act
         Func<Task> act = async () => await _handler.Handle(command, CancellationToken.None);
@@ -281,7 +282,7 @@ public class CreateBlogCommandHandlerTests
             Content = request.Content,
             AuthorId = userId
         });
-        _mockBlogService.ValidateBlog(Arg.Any<Blog>()).Returns(true);
+        _mockBlogService.ValidateBlog(Arg.Any<Blog>()).Returns(Result.Ok());
         _mockBlogRepository.TitleIsExist(Arg.Any<Guid>(), Arg.Any<string>(), Arg.Any<CancellationToken>())
             .Returns(true); // Title zaten mevcut
 
@@ -314,7 +315,7 @@ public class CreateBlogCommandHandlerTests
             Content = request.Content,
             AuthorId = userId
         });
-        _mockBlogService.ValidateBlog(Arg.Any<Blog>()).Returns(true);
+        _mockBlogService.ValidateBlog(Arg.Any<Blog>()).Returns(Result.Ok());
         _mockBlogRepository.TitleIsExist(Arg.Any<Guid>(), Arg.Any<string>(), Arg.Any<CancellationToken>())
             .Returns(false);
         _mockUnitOfWork.SaveChangesAsync(Arg.Any<CancellationToken>()).Returns(1);
@@ -326,8 +327,8 @@ public class CreateBlogCommandHandlerTests
         var result = await _handler.Handle(command, CancellationToken.None);
 
         // Assert
-        result.Should().NotBeNull();
-        result.Id.Should().Be(blogId, "Result'taki Id, mapper tarafýndan set edilen Id ile ayný olmalý");
-        result.Id.Should().Be(capturedBlog!.Id, "Result'taki Id, oluþturulan blog'un Id'si ile ayný olmalý");
+        result.Value.Should().NotBeNull();
+        result.Value?.Id.Should().Be(blogId, "Result'taki Id, mapper tarafýndan set edilen Id ile ayný olmalý");
+        result.Value?.Id.Should().Be(capturedBlog!.Id, "Result'taki Id, oluþturulan blog'un Id'si ile ayný olmalý");
     }
 }
