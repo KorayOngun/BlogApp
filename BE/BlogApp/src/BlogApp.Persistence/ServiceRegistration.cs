@@ -7,8 +7,8 @@ public static class ServiceRegistration
 {
     public static void AddPersistenceServices(this IServiceCollection services)
     {
-    services.AddScoped<Core.Repository.IBlogRepository, Repositories.BlogRepository>();
-    services.AddScoped<Core.Repository.IUnitOfWork, Repositories.UnitOfWork>();
+        services.AddScoped<Core.Repository.IBlogRepository, Repositories.BlogRepository>();
+        services.AddScoped<Core.Repository.IUnitOfWork, Repositories.UnitOfWork>();
     }
     public static void AddBlogAppDbContext(this IServiceCollection services, BlogAppDbContextOptions? blogAppOptions = null)
     {

@@ -14,7 +14,7 @@ public class BlogRepository(BlogAppContext blogAppContext) : IBlogRepository
     }
 
     public async Task<BlogApp.Core.Entities.Blog?> GetByIdAsync(Guid id) => await _blogAppContext.Blogs.FindAsync(id);
-    
+
     public async Task SaveChangesAsync() => await _blogAppContext.SaveChangesAsync();
 
     public async Task<bool> TitleIsExist(Guid authorId, string title, CancellationToken cancellationToken) =>

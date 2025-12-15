@@ -13,8 +13,8 @@ public class BlogService(IBlogRepository blogRepository) : IBlogService
         if (blog.AuthorId == Guid.Empty)
             return Result.Error("user id null olamaz");
 
-        if(string.IsNullOrWhiteSpace(blog.Title))
-            return Result.Error("title boþ olamaz");
+        if (string.IsNullOrWhiteSpace(blog.Title))
+            return Result.Error("title bos olamaz");
 
         return Result.Ok();
     }
@@ -24,7 +24,3 @@ public class BlogService(IBlogRepository blogRepository) : IBlogService
         return await _blogRepository.TitleIsExist(authorId, title, cancellationToken);
     }
 }
-
-
-
-

@@ -19,7 +19,7 @@ builder.Services.AddScoped<IUserHandlerService, UserHandlerService>();
 builder.Services.AddScoped<IBlogService, BlogService>();
 
 var app = builder.Build();
- 
+
 
 if (app.Environment.IsDevelopment())
 {

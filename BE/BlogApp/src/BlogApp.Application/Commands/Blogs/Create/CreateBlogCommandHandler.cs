@@ -14,7 +14,7 @@ public class CreateBlogCommandHandler(
     IBlogRepository blogRepository,
     IUnitOfWork unitOfWork,
     IBlogMapper blogMapper) : IRequestHandler<CreateBlogCommand, Result<CreateBlogResponse>>
-            
+
 {
     private readonly IBlogService _blogService = blogService;
     private readonly IUserHandlerService _userHandlerService = userHandlerService;
@@ -30,10 +30,10 @@ public class CreateBlogCommandHandler(
         var validateResult = _blogService.ValidateBlog(blog);
         if (validateResult.IsError)
             return validateResult.AsError();
-        
+
         var titleControl = await _blogService.IsTitleExistForAuthorAsync(blog.AuthorId, blog.Title, cancellationToken);
         if (titleControl)
-            return Result.Error("A blog with this title already exists for the author.").AsError();
+            return Result.Error("A blog with this title already exists for the author.");
 
         await _blogRepository.AddAsync(blog);
 

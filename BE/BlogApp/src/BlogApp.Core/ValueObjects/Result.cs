@@ -25,14 +25,16 @@ public class Result
     }
 
 
-    public static Result Error() => new(false);
+    public static Error Error() => new Error(null);
 
-    public static Result Error(string message) => new(false, message);
+    public static Error Error(string message) => new ValueObjects.Error(message);
 
     public static Result Ok(string message) => new(true, message);
     public static Result Ok() => new(true);
 
     public Error AsError() => new(Message);
+
+    public static implicit operator Result(Error e) => new Result(false, e.Message);
 }
 
 

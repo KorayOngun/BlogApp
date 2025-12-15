@@ -8,7 +8,7 @@ public static class Endpoints
            .MapGroup("blogs")
            .WithTags("Blogs")
            .MapBlogEndpoints();
-           
-           
+
+
     }
 }

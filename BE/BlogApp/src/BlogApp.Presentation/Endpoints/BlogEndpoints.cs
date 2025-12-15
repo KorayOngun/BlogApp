@@ -25,7 +25,7 @@ public static class BlogEndpoints
             var result = await mediator.Send(query);
             return Results.Ok(result);
         }).WithName("GetById");
-        
+
         return app;
     }
 }

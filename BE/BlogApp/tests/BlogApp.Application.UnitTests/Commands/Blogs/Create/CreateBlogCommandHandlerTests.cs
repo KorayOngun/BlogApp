@@ -23,14 +23,14 @@ public class CreateBlogCommandHandlerTests
     [SetUp]
     public void Setup()
     {
-        // Mock servisleri oluþtur
+        // Mock servisleri oluï¿½tur
         _mockUserHandlerService = Substitute.For<IUserHandlerService>();
         _mockBlogService = Substitute.For<IBlogService>();
         _mockBlogRepository = Substitute.For<IBlogRepository>();
         _mockUnitOfWork = Substitute.For<IUnitOfWork>();
         _mockBlogMapper = Substitute.For<IBlogMapper>();
 
-        // Handler'ý oluþtur
+        // Handler'ï¿½ oluï¿½tur
         _handler = new CreateBlogCommandHandler(
             _mockUserHandlerService,
             _mockBlogService,
@@ -59,20 +59,20 @@ public class CreateBlogCommandHandlerTests
             AuthorId = expectedUserId
         };
 
-        // Mock: IUserHandlerService.GetUserId() belirli bir Guid dönsün
+        // Mock: IUserHandlerService.GetUserId() belirli bir Guid dï¿½nsï¿½n
         _mockUserHandlerService.GetUserId().Returns(expectedUserId);
 
         // Mock: Mapper returns blog with correct AuthorId
         _mockBlogMapper.MapToEntity(command, expectedUserId).Returns(mappedBlog);
 
-        // Mock: BlogService validation baþarýlý
+        // Mock: BlogService validation baï¿½arï¿½lï¿½
         _mockBlogService.ValidateBlog(Arg.Any<Blog>()).Returns(Result.Ok());
 
-        // Mock: Title unique (mevcut deðil)
+        // Mock: Title unique (mevcut deï¿½il)
         _mockBlogRepository.TitleIsExist(Arg.Any<Guid>(), Arg.Any<string>(), Arg.Any<CancellationToken>())
             .Returns(false);
 
-        // Mock: UnitOfWork baþarýlý
+        // Mock: UnitOfWork baï¿½arï¿½lï¿½
         _mockUnitOfWork.SaveChangesAsync(Arg.Any<CancellationToken>()).Returns(1);
 
         Blog? capturedBlog = null;
@@ -87,10 +87,10 @@ public class CreateBlogCommandHandlerTests
         capturedBlog.Title.Should().Be(request.Title);
         capturedBlog.Content.Should().Be(request.Content);
 
-        // IUserHandlerService.GetUserId() çaðrýldý mý?
+        // IUserHandlerService.GetUserId() ï¿½aï¿½rï¿½ldï¿½ mï¿½?
         _mockUserHandlerService.Received(1).GetUserId();
-        
-        // Mapper doðru parametrelerle çaðrýldý mý?
+
+        // Mapper doï¿½ru parametrelerle ï¿½aï¿½rï¿½ldï¿½ mï¿½?
         _mockBlogMapper.Received(1).MapToEntity(command, expectedUserId);
     }
 
@@ -157,7 +157,7 @@ public class CreateBlogCommandHandlerTests
 
         // Assert
         capturedBlog.Should().NotBeNull();
-        capturedBlog!.AuthorId.Should().NotBe(Guid.Empty, "AuthorId boþ olmamalý");
+        capturedBlog!.AuthorId.Should().NotBe(Guid.Empty, "AuthorId boï¿½ olmamalï¿½");
         capturedBlog.AuthorId.Should().Be(validUserId);
     }
 
@@ -189,7 +189,7 @@ public class CreateBlogCommandHandlerTests
         await _handler.Handle(command, CancellationToken.None);
 
         // Assert
-        // IsTitleExistForAuthorAsync çaðrýsýnda AuthorId doðru gönderildi mi?
+        // IsTitleExistForAuthorAsync ï¿½aï¿½rï¿½sï¿½nda AuthorId doï¿½ru gï¿½nderildi mi?
         await _mockBlogService.Received(1).IsTitleExistForAuthorAsync(
             expectedUserId, // UserHandlerService'den gelen ID
             request.Title,
@@ -328,7 +328,7 @@ public class CreateBlogCommandHandlerTests
 
         // Assert
         result.Value.Should().NotBeNull();
-        result.Value?.Id.Should().Be(blogId, "Result'taki Id, mapper tarafýndan set edilen Id ile ayný olmalý");
-        result.Value?.Id.Should().Be(capturedBlog!.Id, "Result'taki Id, oluþturulan blog'un Id'si ile ayný olmalý");
+        result.Value?.Id.Should().Be(blogId, "Result'taki Id, mapper tarafï¿½ndan set edilen Id ile aynï¿½ olmalï¿½");
+        result.Value?.Id.Should().Be(capturedBlog!.Id, "Result'taki Id, oluï¿½turulan blog'un Id'si ile aynï¿½ olmalï¿½");
     }
 }
