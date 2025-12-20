@@ -1,6 +1,4 @@
-
-namespace BlogApp.Core.ValueObjects;
-
+namespace BlogApp.MessageContracts;
 public record PagedRequest
 {
     public int Page { get; set; }
